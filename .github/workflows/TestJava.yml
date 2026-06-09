@@ -13,4 +13,4 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Build with Ant
-      run: ant -Dplatforms.JDK_17.home=$JAVA_HOME test
+      run: ant -Dplatforms.JDK_17.home=$JAVA_HOME -Dlibs.json-simple.classpath=lib/json-simple-1.1.1.jar test
