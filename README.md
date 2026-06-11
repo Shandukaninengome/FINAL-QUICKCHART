@@ -1,1 +1,1 @@
-this project is quickchat
+update readme
