@@ -12,13 +12,15 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Download JUnit jars
+    - name: Download dependencies
       run: |
         mkdir -p lib
-        curl -L -o lib/junit-jupiter-api-5.10.3.jar https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-api/5.10.3/junit-jupiter-api-5.10.3.jar
-        curl -L -o lib/junit-jupiter-engine-5.10.3.jar https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-engine/5.10.3/junit-jupiter-engine-5.10.3.jar
-        curl -L -o lib/junit-platform-launcher-1.10.3.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-launcher/1.10.3/junit-platform-launcher-1.10.3.jar
-        curl -L -o lib/opentest4j-1.3.0.jar https://repo1.maven.org/maven2/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar
-        curl -L -o lib/junit-jupiter-params-5.10.3.jar https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-params/5.10.3/junit-jupiter-params-5.10.3.jar
-    - name: Build with Ant
-      run: ant -Dplatforms.JDK_17.home=$JAVA_HOME test
+        curl -L -o lib/json-simple.jar https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar
+        curl -L -o lib/junit-platform-console.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.3/junit-platform-console-standalone-1.10.3.jar
+    - name: Compile
+      run: |
+        mkdir -p out
+        javac -cp lib/json-simple.jar:lib/junit-platform-console.jar -d out $(find src -name "*.java") $(find test -name "*.java")
+    - name: Run Tests
+      run: |
+        java -jar lib/junit-platform-console.jar --class-path out --scan-class-path
